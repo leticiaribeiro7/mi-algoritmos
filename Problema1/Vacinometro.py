@@ -10,83 +10,84 @@ do código, e estou ciente que estes trechos não serão considerados para fins 
 ******************************************************************************************'''
 
 
-print("Vacinação em X")
+print('Vacinação em X\n')
+print('O que deseja fazer?\n')
 
 
 
-#listas para armazenar dados necessários
 
-nomes = []
-cpf = []
-sexo = []
-prioridade = []
-localVacinacao = []
-dia = []
-horario = []   #foi necessario duas listas de horario pois uma pegará do usuário o horário como string
-horarioFormatado = []     #e a outra será a transformação desses dados em inteiros
-tipoVacina = []
-doseVacina = []
-contador = [0]*5
-loteVacina = []
-i = 0  #quantidade de vacinados
+#essas variaveis serão utilizadas como contadores dentro das funções
+doseUm = 0
+sexoFeminino = 0
+periodoManha = 0
+totalDeDoses = 0
+coronavac = 0
 
 
-#cada indice da lista "contador" será um tipo de contador
-#contador[0] = vacinadas do sexo feminino
-#contador[1] = vacinados pela manhã
-#contador[2] = tipo vacina 
-#contador[3] = primeira dose
-#contador[] = idosos vacinados
 
 
-def relatorioParcial(i):
-    print('Quantidade de vacinados: ', i)
-    print('Quantidade de primeiras doses aplicadas: ', contador[3])
-    print('Quantidade de segundas doses aplicadas: ', i - contador[3]) #subtraindo primeiras doses da quantidade total de vacinados
-    print('Percentual de vacinados com Coronavac: ', (contador[2]*100) / i)
-    print('Percentual de vacinados com AstraZeneca', (100) - (contador[2]*100) / i)
-    print('Percentual de vacinas aplicadas pela manhã: ', (contador[1]*100) / i)
-    print('Percentual de vacinados do sexo feminino: ', (contador[0]*100) / i)
-    print('Percentual de vacinados do sexo masculino: ', (100) - (contador[0]*100))
+def relatorioParcial(totalDeDoses):   #variavel contadora foi passada como parametro nas duas funções
 
-def menu(i):
+    print('Quantidade de vacinados: ', doseUm)  #se considera o total de vacinados a partir da contagem das primeiras doses
+    print('Quantidade de doses aplicadas: ', totalDeDoses)
+    print('Quantidade de pessoas que receberam a primeira dose: ', doseUm)
+    print('Quantidade de pessoas que receberam a segunda dose: ', totalDeDoses - doseUm) #subtraindo total de doses das primeiras para descobrir o total de segundas doses
+    print('Percentual de vacinados com Coronavac: ', (coronavac*100) / totalDeDoses)
+    print('Percentual de vacinados com AstraZeneca', (100) - (coronavac*100) / totalDeDoses) #foi pego o percentual da coronavac e substraido por 100 para obter o percentual da astrazeneca
+    print('Percentual de vacinas aplicadas pela manhã: ', (periodoManha*100) / totalDeDoses)       
+    print('Percentual de vacinados do sexo feminino: ', (sexoFeminino*100) / totalDeDoses)
+    print('Percentual de vacinados do sexo masculino: ', (100) - (sexoFeminino*100) / totalDeDoses)
+
+def menu(totalDeDoses):
 
     while True:
 
         escolha = int(input('[1] Cadastrar novo paciente \n[2] Visualizar Relatório Parcial \n[3] Sair --> '))
 
         if escolha == 2:
-            relatorioParcial(i)
-            
+            try:
+                relatorioParcial(totalDeDoses)
+            except ZeroDivisionError:  #tratamento de erro caso o usuario queira ver relatorio antes de cadastrar alguem
+                print('Erro ao obter percentuais! Ainda não há pessoas cadastradas. ')  ##complementar!
+                
             
         if escolha == 3: 
+            print('Programa finalizado.')
             break
 
-        nomes.append(input('Nome: '))
-        cpf.append(input('CPF: '))
-        sexo.append(int(input('[1] Feminino \n[2] Masculino: ')))
-        if sexo[i] == 1:
-            contador[0] += 1
+        if escolha < 1 or escolha > 3:
+            print('Digite uma opção valida!! ') #tratamento de erro caso usuario escolha opção inexistente
+            continue
 
-        localVacinacao.append(input('Local da vacinação: '))
-        dia.append(input('Dia da vacinação (Ex: DD/MM/AAAA): '))
-        horario.append(input('Horario da vacinação (Ex: 8:00, 9:25): '))
-        horario[i] = horario[i].replace(':', '')
-        horarioFormatado.append(int(i))   #transformando horarios em int e transferindo para outra lista
-        if horarioFormatado[i] >= 800 and horarioFormatado[i] <=1259:  #verificando se foi período manhã
-            contador[1] += 1
+        nome = input('Nome completo: ')
+        cpf = input('CPF: ')
+        doseVacina = int(input('[1] Primeira dose \n[2] Segunda dose: '))
+        if doseVacina == 1:
+            global doseUm  #informando para o programa alterar a variavel global, não criar uma nova
+            doseUm += 1   #somando nesta variavel caso atenda a condição do if
 
-        tipoVacina.append(int(input('[1] Coronavac \n[2] Astrazeneca: ')))
-        if tipoVacina[i] == 1:
-            contador[2] += 1
+        loteVacina = input('Lote da vacina: ')
+        localVacinacao = input('Local da vacinação: ')
 
-        doseVacina.append(int(input('[1] Primeira dose \n[2] Segunda dose: ')))
-        if doseVacina[i] == 1:
-            contador[3] += 1
+        sexo = int(input('[1] Feminino \n[2] Masculino: '))
+        if sexo == 1:
+            global sexoFeminino
+            sexoFeminino += 1
 
-        loteVacina.append(input('Lote da vacina: '))
+        dia = input('Dia da vacinação (Ex: DD/MM/AAAA): ')
+        horario = input('Horario da vacinação de 8:00 às 18:00 (Ex: 8:25, 15:00) ') #pegando horario como string
+        horario = horario.replace(':', '') #retirando o ":" para manipular variavel como tipo inteiro
+        horarioFormatado = int(horario)   #transformando horario em int e transferindo para outra variavel
+        if horarioFormatado >= 800 and horarioFormatado <=1259: #verificando se foi periodo manhã (entre 8:00 às 12:59)
+            global periodoManha
+            periodoManha += 1
+
+        tipoVacina = int(input('[1] Coronavac \n[2] Astrazeneca: '))
+        if tipoVacina == 1:
+            global coronavac
+            coronavac += 1
         
-        i += 1
+        totalDeDoses += 1
 
-
-menu(i)
+#programa inicia chamando a função menu
+menu(totalDeDoses)

@@ -1,7 +1,7 @@
 '''*******************************************************************************
 Autor: Letícia Teixeira Ribeiro dos Santos
 Componente Curricular: Algoritmos I
-Concluido em: 
+Concluido em: 12/03/2021
 Declaro que este código foi elaborado por mim de forma individual e não contém nenhum
 trecho de código de outro colega ou de outro autor, tais como provindos de livros e
 apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de código
@@ -10,11 +10,8 @@ do código, e estou ciente que estes trechos não serão considerados para fins 
 ******************************************************************************************'''
 
 
-print('Vacinação em X\n')
-print('O que deseja fazer?\n')
 
-
-#essas variaveis serão utilizadas como contadores dentro das funções
+#Variaveis contadoras que serão utilizadas nos cálculos.
 doseUm = 0
 sexoFeminino = 0
 periodoManha = 0
@@ -23,70 +20,98 @@ coronavac = 0
 qtdIdosos = 0
 
 
+def relatorioParcial(totalDeDoses):   
+    
+    '''dependendo do que se pede em cada requisito, alguns valores foram 
+    divididos pelo total de vacinados, e outros pelo total de doses'''
+    percentCoronavac = (coronavac*100) / doseUm
+    percentAstrazeneca = (100) - (coronavac*100) / doseUm
+    percentIdosos = (qtdIdosos*100) / doseUm
+    percentManha = (periodoManha*100) / totalDeDoses
+    percentTarde = (100) - (periodoManha*100) / totalDeDoses   
+    percentFeminino = (sexoFeminino*100) / doseUm
+    percentMasculino = (100) - (sexoFeminino*100) / doseUm
 
-def relatorioParcial(totalDeDoses):   #variavel contadora totaldeDoses foi passada como parametro nas duas funções
-
-    print('Quantidade de vacinados: ', doseUm)  #se considera o total de vacinados a partir da contagem das primeiras doses
+    #Se considera o total de vacinados a partir da contagem das primeiras doses.
+    print('Quantidade de vacinados: ', doseUm)  
     print('Quantidade de doses aplicadas: ', totalDeDoses)
     print('Quantidade de pessoas que receberam a primeira dose: ', doseUm)
-    print('Quantidade de pessoas que receberam a segunda dose: ', totalDeDoses - doseUm) #subtraindo total de doses das primeiras para descobrir o total de segundas doses
-    print('Percentual de vacinados com Coronavac: ', (coronavac*100) / doseUm)  #percentual coronavac
-    print('Percentual de vacinados com AstraZeneca: ', (100) - (coronavac*100) / doseUm) #foi pego o percentual da coronavac e substraido por 100 para obter o percentual da astrazeneca
-    print('Percentual de idosos vacinados: ', (qtdIdosos*100) / doseUm)
-    print('Percentual de vacinas aplicadas pela manhã: ', (periodoManha*100) / doseUm)       
-    print('Percentual de vacinados do sexo feminino: ', (sexoFeminino*100) / doseUm)
-    print('Percentual de vacinados do sexo masculino: ', (100) - (sexoFeminino*100) / doseUm)
+    print('Quantidade de pessoas que receberam a segunda dose: ', totalDeDoses - doseUm)
+    
+    #Foi utilizado print formatado apenas em percentuais para limitar número de casas decimais.
+    print(f'Percentual de vacinados com Coronavac: {percentCoronavac:.1f}%')  
+    print(f'Percentual de vacinados com AstraZeneca: {percentAstrazeneca:.1f}%')
+    print(f'Percentual de idosos vacinados: {percentIdosos:.1f}%')
+    print(f'Percentual de vacinas aplicadas pela manhã: {percentManha:.1f}%')
+    print(f'Percentual de vacinas aplicadas pela tarde: {percentTarde:.1f}%')    
+    print(f'Percentual de vacinados do sexo feminino: {percentFeminino:.1f}%')
+    print(f'Percentual de vacinados do sexo masculino: {percentMasculino:.1f}%')
+
+
+print('*'*15)
+print('  VACINÔMETRO')
+print('*'*15)
+print('O que deseja fazer? Escolha por número:\n')
+
 
 def menu(totalDeDoses):
 
     while True:
 
-        escolha = int(input('[1] Cadastrar novo paciente \n[2] Visualizar Relatório Parcial \n[3] Sair --> '))
+        escolha = int(input('[1] Cadastrar Pessoa \n[2] Visualizar Relatório Parcial \n[3] Sair --> '))
 
         if escolha == 2:
+            #Tratamento de erro caso o usuário queira ver relatorio antes de cadastrar alguém
             try:
                 relatorioParcial(totalDeDoses)
-            except ZeroDivisionError:  #tratamento de erro caso o usuario queira ver relatorio antes de cadastrar alguem
-                print('Erro ao obter percentuais! Ainda não há pessoas cadastradas. ')  ##complementar!
-                
-        if escolha == 3: 
+                continue
+            except ZeroDivisionError:
+                print('Erro ao obter percentuais! Ainda não há pessoas cadastradas. ')
+                continue
+
+        elif escolha == 3: 
             print('Programa finalizado.')
             break
 
-        if escolha < 1 or escolha > 3:
-            print('Digite uma opção valida!! ') #tratamento de erro caso usuario escolha opção inexistente
+        #Tratamento de erro caso usuário escolha opção inexistente.
+        elif escolha < 1 or escolha > 3:
+            print('Digite uma opção valida!! ')
             continue
 
-        nome = input('Nome completo: ')
+        nome = input('Nome completo: ')  
         cpf = input('CPF: ')
         dia = input('Dia da vacinação (Ex: DD/MM/AAAA): ')
 
-        horario = input('Horario da vacinação de 8:00 às 18:00 (Ex: 8:25, 15:00): ') #pegando horario como string
-        horario = horario.replace(':', '') #retirando o ":" para manipular variavel como tipo inteiro
-        horarioFormatado = int(horario)   #transformando horario em int e transferindo para outra variavel
-        if horarioFormatado >= 800 and horarioFormatado <=1259: #verificando se foi periodo manhã (entre 8:00 às 12:59)
+        #O bloco a seguir mostra o tratamento para contabilizar os horários entrados como período manhã
+        horario = input('Horario da vacinação de 8:00 às 18:00 (Ex: 8:25, 15:00): ')
+        horario = horario.replace(':', '') 
+        horarioFormatado = int(horario)    
+        if horarioFormatado >= 800 and horarioFormatado <=1159:
+            #Contabilizando na variável global existente.
             global periodoManha
-            periodoManha += 1
+            periodoManha += 1 
         
         loteVacina = input('Lote da vacina: ')
 
         doseVacina = int(input('[1] Primeira dose \n[2] Segunda dose: '))
         if doseVacina == 1:
-            global doseUm  #informando para o programa alterar a variavel global, não criar uma nova
-            doseUm += 1   #somando nesta variavel caso atenda a condição do if
+            global doseUm  
+            doseUm += 1
 
-        if doseVacina == 2:   #essa condição apenas contabiliza caso seja a segunda dose e interrompe a entrada de dados
+        #Essa condição apenas contabiliza caso seja a segunda dose e interrompe a entrada de dados
+        if doseVacina == 2:
             totalDeDoses += 1
             print('Segunda dose contabilizada!\n')
             novaEscolha = int(input('[1] Voltar ao menu principal \n[2] Sair --> '))
+
             if novaEscolha == 1:
-                menu(totalDeDoses)
+                continue
+
             elif novaEscolha == 2:
                 print('Programa finalizado.')
                 break
 
         #se for segunda dose não será necessário pegar os dados abaixo novamente
-
         sexo = int(input('[1] Feminino \n[2] Masculino: '))
         if sexo == 1:
             global sexoFeminino
@@ -97,9 +122,9 @@ def menu(totalDeDoses):
             global coronavac
             coronavac += 1
 
-        print('Fase prioritária em que paciente se encaixa: ')
-        prioridade = int(input('[1] Fase 1 \n[2] Fase 2 \n[3] Fase 3 \n[4] Fase 4: '))
-        idoso = int(input('É idoso? \n[1] Sim \n[2] Não: '))
+        prioridade = input('Digite o grupo prioritário do vacinado: ')
+        
+        idoso = int(input('Idade a partir de 60 anos? \n[1] Sim \n[2] Não: '))
         if idoso == 1:
             global qtdIdosos
             qtdIdosos += 1

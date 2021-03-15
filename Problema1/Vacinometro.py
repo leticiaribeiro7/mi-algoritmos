@@ -102,14 +102,7 @@ def menu(totalDeDoses):
         if doseVacina == 2:
             totalDeDoses += 1
             print('Segunda dose contabilizada!\n')
-            novaEscolha = int(input('[1] Voltar ao menu principal \n[2] Sair --> '))
-
-            if novaEscolha == 1:
-                continue
-
-            elif novaEscolha == 2:
-                print('Programa finalizado.')
-                break
+            continue
 
         #se for segunda dose não será necessário pegar os dados abaixo novamente
         sexo = int(input('[1] Feminino \n[2] Masculino: '))

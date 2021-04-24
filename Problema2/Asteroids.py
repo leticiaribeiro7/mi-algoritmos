@@ -1,5 +1,5 @@
-import os
-import time
+from os import system
+from time import sleep
 import keyboard
 from random import randint
 
@@ -35,39 +35,35 @@ matriz = [
 #0 a 25 col
 #0 e 25 é cenario
 
-#colocar em main
-print('***********ASTEROIDS*********')
-
-def mostra_nave():
+def mostra_matriz():
   for linha in matriz:
     for coluna in linha:
       print(coluna,end='')
     print()
 
-#a cada if de derrota da rodada vai ser chamada mostra asteroide dnv para aleatorizar o asteroide
-
-
+# Movimentação 
+# O break foi utilizado nas funções a seguir por que era necessário percorrer a matriz apenas até certo ponto
 def direita():
 
-  os.system('cls')
+  system('cls')
   
+  for i in range(0,36):
+    if matriz[23][i] == '*':
+      matriz[23][i] = ' '
+      matriz[23][i+1] = '*'
+      break
+
   for j in range(0,36):
-    if matriz[23][j] == '*':
-      matriz[23][j] = ' '
-      matriz[23][j+1] = '*'
+    if matriz[24][j] == '*':
+      matriz[24][j] = ' '
+      matriz[24][j+3] = '*'
       break
 
-  for l in range(0,36):
-    if matriz[24][l] == '*':
-      matriz[24][l] = ' '
-      matriz[24][l+3] = '*'
-      break
-
-  mostra_nave()
+  mostra_matriz()  #chamando essa funçao dnv pq se nao chamar o mapa do jogo demora mais pra printar dnv
 
 def esquerda():
 
-  os.system('cls')
+  system('cls')
 
   for k in range(0,36):
     if matriz[23][k] == '*':
@@ -81,20 +77,19 @@ def esquerda():
       matriz[24][m-3] = '*'
       break
 
-
-  mostra_nave()
-    
+  mostra_matriz()
+  
+# Verificando posição da nave atual para atirar o projetil
 def projetil():
 
-  os.system('cls')
+  system('cls')
 
-  for j in range(0,32):
+  for j in range(0,35):
     if matriz[23][j] == '*':
       matriz[22][j] = 'o'
       break
 
-  mostra_nave()
-
+# Movendo o projetil na tela uma coluna a menos a cada chamada
 def move_projetil():
 
   for i in range(0,23):
@@ -105,12 +100,12 @@ def move_projetil():
       if matriz[i][j] == 'o' and i < 2:  #essa condiçao foi criada pro projetil sumir na tela apenas apos atingir o topo
         matriz[i][j] = ' '
 
-
+# Movendo asteroide uma coluna a mais a cada chamada
 def move_asteroide(posicao, n):
 
-  #limpando posiçao anterior do asteroide
+  # Limpando posiçao anterior do asteroide
   for i in range(1,22):
-    for j in range(0,34):
+    for j in range(1,36):
       if matriz[i][j] == '*':
         matriz[i][j] = ' '
 
@@ -149,27 +144,42 @@ def move_asteroide(posicao, n):
 
 def jogo():
 
-  pontuacao = 0
-  posicao = randint(3,31)     #vai ser chamado dnv a cada vida perdida ou aumento de pont
+  # Posicao inicial da nave a cada novo jogo
+  matriz[23][17] = '*'
+  matriz[24][16] = '*'
+  matriz[24][17] = '*'
+  matriz[24][18] = '*'
+
+  pontuacao = 0    
+  posicao = randint(3,31)
   a = False
   n = 1
-  x = 0   #essas var mudam de valor dentro da funçao jogo
+  x = 0
   vidas = 10
+  esc = False
 
-  while vidas > 0:
+  print('''                       INSTRUÇOES:
+      - Utilize as teclas de seta direita e esquerda para movimentar a nave
+      - Movimente a nave dentro do limite do cenário para evitar erros na jogabilidade''')
 
-    os.system('cls')
+  sleep(10)
 
-    print('Vidas:', vidas)
-    print('Pontuação: ', pontuacao) #de acordo a projetil atingindo asteroide
+  while vidas > 0 and esc == False:
+
+    system('cls')
+
+    print('Pontuação: ', pontuacao)
+    print('Vidas: ', vidas)
     
+
     x+=1
 
-    if x == 2:
+     # Essa condição controla a quantidade de vezes que o asteroide se move
+    if x == 8:
       n, x = move_asteroide(posicao, n)
       n+=1
 
-    mostra_nave() 
+    mostra_matriz() 
 
     if keyboard.is_pressed("left"):
       esquerda()
@@ -179,19 +189,21 @@ def jogo():
 
     if keyboard.is_pressed('space'):
       projetil()
-      a = True         # variavel 'a' muda de valor quando o primeiro projetil é disparado
+      # Essa variavel muda de valor quando o primeiro projetil é disparado
+      a = True  
 
-    if a:     # movendo projeteis pro topo da tela a cada iteração
+    # Essa condição controla a chamada da função move_projetil
+    if a:
       move_projetil()
 
     if keyboard.is_pressed('esc'):
-      break
+      esc = True
+      vidas = 0
 
-    # movendo projeteis pro topo da tela a cada iteração
 
-    #se asteroide chegar proximo do final do cenario sem ser destruido, tbm serve pra colisao da nave e asteroide
+    # Essa condição se torna verdadeira quando o asteroide chega proximo ao fim do cenário sem ser destruído
     if matriz[22][posicao] == '*':
-      time.sleep(1)
+      sleep(1)
       vidas-=1
       for i in range(0,23):
         for j in range(1,36):
@@ -200,47 +212,76 @@ def jogo():
           n = 1
           posicao = randint(3,31)
 
+    # Essa repetição verifica se houve colisão do tiro e asteroide a cada iteração do while
     for i in range(0,23):
       for j in range(1,36):
         if matriz[i][j] == 'o' and matriz[i-1][j] == '*':
+          sleep(1)
           pontuacao += 10
-          time.sleep(1)
           matriz[i][j] = ' '
           n = 1
           posicao = randint(3,31)
 
-    time.sleep(0.08)
+    sleep(0.06)
 
   return n, x, posicao, vidas, pontuacao
 
-#talvez botar dentro de main
-i = 0
-recordes = {}
+def main():
 
-while i == 0:
+  cont = 0
 
-  escolha = int(input('[1] Jogar \n[2] Recordes \n[3] Sobre \n[4] Sair: '))
+  print('''
+         ___         __                  _     __    
+        /   |  _____/ /____  _________  (_)___/ /____
+       / /| | / ___/ __/ _ \/ ___/ __ \/ / __  / ___/
+      / ___ |(__  ) /_/  __/ /  / /_/ / / /_/ (__  ) 
+     /_/  |_/____/\__/\___/_/   \____/_/\__,_/____/ ''')
+
+  print('\n')
+
+  jogador = ()
+  recordes = []
+
+  while cont == 0:
+
+    escolha = int(input('\n[1] Jogar \n[2] Recordes \n[3] Sobre \n[4] Sair: '))
 
 
-  if escolha == 1:
-    #posiçao inicial da nave a cada novo jogo
-    matriz[23][17] = '*'
-    matriz[24][16] = '*'
-    matriz[24][17] = '*'
-    matriz[24][18] = '*'
-    time.sleep(1)
-    n, x, posicao, vidas, pontuacao = jogo()
+    if escolha == 1:
+      # Limpando toda a matriz se for o caso do jogador apertar "esc" e depois querer voltar a jogar
+      for i in range(0,23):
+        for j in range(1,36):
+          if matriz[i][j] == '*' or matriz[i][j] == 'o':
+            matriz[i][j] = ' '
 
-    nome = input('Digite seu primeiro nome: ')
-    recordes[nome] = pontuacao
+      sleep(1)
+      n, x, posicao, vidas, pontuacao = jogo()
 
+      jogador = pontuacao, input('Seu nome:' )
+      # Pontuações são adicionadas sem critério até chegar ao top 4 
+      if len(recordes) <= 4:
+        recordes.append(jogador)
+ 
+      else:
+        recordes = sorted(recordes)
+        if recordes[0][0] < jogador[0]:
+          recordes.pop(0)
+          recordes.append(jogador)
 
-  if escolha == 2:   #ver forma mais bonita de printar o dict
-    print('Recordes: ', recordes)
+      recordes_finais = sorted(recordes, reverse=True)
 
-  if escolha == 3:
-    #ver oq botar aqui na sessao
+    if escolha == 2: 
 
-  if escolha == 4:
-    print('Você saiu do jogo.')
-    i = 1
+      for elemento in recordes_finais:
+        print(elemento)
+
+    if escolha == 3:
+      
+      print('''Projeto inspirado no jogo de tiro lançado em 1978: Space Invaders
+        Desenvolvido por Letícia Ribeiro em 2021.''' )
+
+    if escolha == 4:
+      print('Você saiu do jogo.')
+      cont = 1
+
+main()

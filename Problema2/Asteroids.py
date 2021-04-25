@@ -59,7 +59,7 @@ def direita():
       matriz[24][j+3] = '*'
       break
 
-  mostra_matriz()  #chamando essa funçao dnv pq se nao chamar o mapa do jogo demora mais pra printar dnv
+  mostra_matriz()
 
 def esquerda():
 
@@ -79,7 +79,7 @@ def esquerda():
 
   mostra_matriz()
   
-# Verificando posição da nave atual para atirar o projetil
+# Verificando posição atual da nave para atirar o projetil
 def projetil():
 
   system('cls')
@@ -97,7 +97,9 @@ def move_projetil():
       if matriz[i][j] == 'o' and i >= 2:
         matriz[i][j] = ' '
         matriz[i-1][j] = 'o'
-      if matriz[i][j] == 'o' and i < 2:  #essa condiçao foi criada pro projetil sumir na tela apenas apos atingir o topo
+
+      # Essa condiçao foi criada pro projetil sumir da tela apenas apos atingir o topo
+      if matriz[i][j] == 'o' and i < 2:
         matriz[i][j] = ' '
 
 # Movendo asteroide uma coluna a mais a cada chamada
@@ -109,35 +111,19 @@ def move_asteroide(posicao, n):
       if matriz[i][j] == '*':
         matriz[i][j] = ' '
 
-  matriz[n][posicao] = '*'
-  matriz[n][posicao+1] = '*'
-  matriz[n][posicao+2] = '*'
+  for i in range(3):
+    matriz[n][posicao+i] = '*'
+    matriz[n+4][posicao+i] = '*'
+  
+  for i in range(-1, 4):
+    matriz[n+1][posicao+i] = '*'
+    matriz[n+3][posicao+i] = '*'
 
-  matriz[n+1][posicao-1] = '*'
-  matriz[n+1][posicao] = '*'
-  matriz[n+1][posicao+1] = '*'
-  matriz[n+1][posicao+2] = '*'
-  matriz[n+1][posicao+3] = '*'
+  for i in range(-2, 5):
+    matriz[n+2][posicao+i] = '*'
 
-  matriz[n+2][posicao-2] = '*'
-  matriz[n+2][posicao-1] = '*'
-  matriz[n+2][posicao] = '*'
-  matriz[n+2][posicao+1] = '*'
-  matriz[n+2][posicao+2] = '*'
-  matriz[n+2][posicao+3] = '*'
-  matriz[n+2][posicao+4] = '*'
-
-  matriz[n+3][posicao-1] = '*'
-  matriz[n+3][posicao] = '*'
-  matriz[n+3][posicao+1] = '*'
-  matriz[n+3][posicao+2] = '*'
-  matriz[n+3][posicao+3] = '*'
-
-  matriz[n+4][posicao] = '*'
-  matriz[n+4][posicao+1] = '*'
-  matriz[n+4][posicao+2] = '*'
-
-  x = 0  #resetando variavel pra contar dnv no while
+  # Resetando variável para proxima iteração do while na função jogo
+  x = 0
 
   return n, x
 
@@ -155,7 +141,7 @@ def jogo():
   a = False
   n = 1
   x = 0
-  vidas = 10
+  vidas = 5
   esc = False
 
   print('''                       INSTRUÇOES:
@@ -175,7 +161,7 @@ def jogo():
     x+=1
 
      # Essa condição controla a quantidade de vezes que o asteroide se move
-    if x == 8:
+    if x == 6:
       n, x = move_asteroide(posicao, n)
       n+=1
 
@@ -248,8 +234,9 @@ def main():
 
 
     if escolha == 1:
-      # Limpando toda a matriz se for o caso do jogador apertar "esc" e depois querer voltar a jogar
-      for i in range(0,23):
+
+      # Limpando o cenário caso o jogador saia e depois queira voltar a jogar na mesma execução
+      for i in range(0,25):
         for j in range(1,36):
           if matriz[i][j] == '*' or matriz[i][j] == 'o':
             matriz[i][j] = ' '
@@ -257,7 +244,8 @@ def main():
       sleep(1)
       n, x, posicao, vidas, pontuacao = jogo()
 
-      jogador = pontuacao, input('Seu nome:' )
+      jogador = pontuacao, input('Seu nome: ' )
+
       # Pontuações são adicionadas sem critério até chegar ao top 4 
       if len(recordes) <= 4:
         recordes.append(jogador)
@@ -277,7 +265,7 @@ def main():
 
     if escolha == 3:
       
-      print('''Projeto inspirado no jogo de tiro lançado em 1978: Space Invaders
+      print('''Projeto inspirado no jogo de tiro lançado na década de 70: Asteroids
         Desenvolvido por Letícia Ribeiro em 2021.''' )
 
     if escolha == 4:

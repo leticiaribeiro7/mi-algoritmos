@@ -1,39 +1,19 @@
-from os import system
+'''*******************************************************************************
+Autor: Letícia Teixeira Ribeiro dos Santos
+Componente Curricular: Algoritmos I
+Concluido em: 25/04/2021
+Declaro que este código foi elaborado por mim de forma individual e não contém nenhum
+trecho de código de outro colega ou de outro autor, tais como provindos de livros e
+apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de código
+de outra autoria que não a minha está destacado com uma citação para o autor e a fonte
+do código, e estou ciente que estes trechos não serão considerados para fins de avaliação.
+******************************************************************************************'''
+
+from os import system, name
 from time import sleep
 import keyboard
 from random import randint
 
-matriz = [
-  [' ','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',' '],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'],
-  ['|','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','|']
-]
-#0a 36 lin = 37 linhas. 2 pro cenario
-#0 a 25 col
-#0 e 25 é cenario
 
 def mostra_matriz():
   for linha in matriz:
@@ -45,7 +25,7 @@ def mostra_matriz():
 # O break foi utilizado nas funções a seguir por que era necessário percorrer a matriz apenas até certo ponto
 def direita():
 
-  system('cls')
+  system('cls' if name == 'nt' else 'clear')
   
   for i in range(0,36):
     if matriz[23][i] == '*':
@@ -63,18 +43,18 @@ def direita():
 
 def esquerda():
 
-  system('cls')
+  system('cls' if name == 'nt' else 'clear')
 
-  for k in range(0,36):
-    if matriz[23][k] == '*':
-      matriz[23][k] = ' '
-      matriz[23][k-1] = '*'
+  for i in range(0,36):
+    if matriz[23][i] == '*':
+      matriz[23][i] = ' '
+      matriz[23][i-1] = '*'
       break
 
-  for m in range(36,0,-1):
-    if matriz[24][m] == '*':
-      matriz[24][m] = ' '
-      matriz[24][m-3] = '*'
+  for j in range(36,0,-1):
+    if matriz[24][j] == '*':
+      matriz[24][j] = ' '
+      matriz[24][j-3] = '*'
       break
 
   mostra_matriz()
@@ -82,7 +62,7 @@ def esquerda():
 # Verificando posição atual da nave para atirar o projetil
 def projetil():
 
-  system('cls')
+  system('cls' if name == 'nt' else 'clear')
 
   for j in range(0,35):
     if matriz[23][j] == '*':
@@ -103,30 +83,61 @@ def move_projetil():
         matriz[i][j] = ' '
 
 # Movendo asteroide uma coluna a mais a cada chamada
-def move_asteroide(posicao, n):
+def move_asteroide(posicao, num):
 
   # Limpando posiçao anterior do asteroide
-  for i in range(1,22):
+  for i in range(1,23):
     for j in range(1,36):
       if matriz[i][j] == '*':
         matriz[i][j] = ' '
 
+  # Definindo o asteroide
   for i in range(3):
-    matriz[n][posicao+i] = '*'
-    matriz[n+4][posicao+i] = '*'
+    matriz[num][posicao+i] = '*'
+    matriz[num+4][posicao+i] = '*'
   
   for i in range(-1, 4):
-    matriz[n+1][posicao+i] = '*'
-    matriz[n+3][posicao+i] = '*'
+    matriz[num+1][posicao+i] = '*'
+    matriz[num+3][posicao+i] = '*'
 
   for i in range(-2, 5):
-    matriz[n+2][posicao+i] = '*'
+    matriz[num+2][posicao+i] = '*'
 
   # Resetando variável para proxima iteração do while na função jogo
-  x = 0
+  timer = 0
 
-  return n, x
+  return timer
 
+def colisao(num, posicao, vidas, esc, pontuacao):
+    # Essa condição verifica se houve colisão entre nave e asteroide
+  if num == 19:
+    if matriz[23][posicao] == '*' or matriz[23][posicao+1] == '*' or matriz[23][posicao+2] == '*':
+      print('O asteroide colidiu com a nave!!!')
+      esc = True
+      vidas = 0
+
+  # Essa condição se torna verdadeira quando o asteroide chega proximo ao fim do cenário sem ser destruído
+  if matriz[22][posicao] == '*':
+    sleep(1)
+    vidas-=1
+    for i in range(0,23):
+      for j in range(1,36):
+        if matriz[i][j] == 'o' or matriz[i][j] == '*':  # Reiniciando o cenário
+          matriz[i][j] = ' '
+      num = 1
+      posicao = randint(3,31)
+
+  # Essa repetição verifica se houve colisão do tiro e asteroide a cada iteração do while
+  for i in range(0,23):
+    for j in range(1,36):
+      if matriz[i][j] == 'o' and matriz[i-1][j] == '*':
+        sleep(1)
+        pontuacao += 10
+        matriz[i][j] = ' '
+        num = 1
+        posicao = randint(3,31)
+
+  return num, posicao, vidas, esc, pontuacao
 
 def jogo():
 
@@ -138,81 +149,67 @@ def jogo():
 
   pontuacao = 0    
   posicao = randint(3,31)
-  a = False
-  n = 1
-  x = 0
-  vidas = 5
-  esc = False
+  proj = False 
+  esc = False  # Essa variável muda de valor quando o jogador deseja sair do jogo
+  num = 1   # Essa variável controla a mudança de lugar do asteroide dentro da matriz
+  timer = 0
+  vidas = 10
 
-  print('''                       INSTRUÇOES:
-      - Utilize as teclas de seta direita e esquerda para movimentar a nave
-      - Movimente a nave dentro do limite do cenário para evitar erros na jogabilidade''')
+  print()
+  print('''     INSTRUÇOES:
+      > Utilize as teclas de seta direita e esquerda para movimentar a nave
+      > Movimente a nave dentro do limite do cenário para evitar erros na jogabilidade
+      > Se um asteroide colidir na nave, você morre :(
+      > Se você não destruir o asteroide, perde 1 vida.
+                 Vamos lá!''')
 
-  sleep(10)
+  sleep(7)
 
   while vidas > 0 and esc == False:
 
-    system('cls')
+    system('cls' if name == 'nt' else 'clear')
 
     print('Pontuação: ', pontuacao)
     print('Vidas: ', vidas)
     
 
-    x+=1
+    timer+=1
 
      # Essa condição controla a quantidade de vezes que o asteroide se move
-    if x == 6:
-      n, x = move_asteroide(posicao, n)
-      n+=1
+    if timer == 6:
+      timer = move_asteroide(posicao, num)
+      num+=1
 
     mostra_matriz() 
 
-    if keyboard.is_pressed("left"):
+    if keyboard.is_pressed('left'):
       esquerda()
 
-    if keyboard.is_pressed("right"):
+    if keyboard.is_pressed('right'):
       direita()
 
     if keyboard.is_pressed('space'):
       projetil()
       # Essa variavel muda de valor quando o primeiro projetil é disparado
-      a = True  
+      proj = True  
 
     # Essa condição controla a chamada da função move_projetil
-    if a:
+    if proj:
       move_projetil()
 
     if keyboard.is_pressed('esc'):
       esc = True
       vidas = 0
 
+    # Nessa função foi necessário pegar os valores como parametro e também retorná-los
+    # para que as outras funções saibam da mudança de valores ocorrida
+    num, posicao, vidas, esc, pontuacao = colisao(num, posicao, vidas, esc, pontuacao)
 
-    # Essa condição se torna verdadeira quando o asteroide chega proximo ao fim do cenário sem ser destruído
-    if matriz[22][posicao] == '*':
-      sleep(1)
-      vidas-=1
-      for i in range(0,23):
-        for j in range(1,36):
-          if matriz[i][j] == 'o' or matriz[i][j] == '*':  #limpando asteroide e tiros da tela
-            matriz[i][j] = ' '
-          n = 1
-          posicao = randint(3,31)
+    sleep(0.02)
 
-    # Essa repetição verifica se houve colisão do tiro e asteroide a cada iteração do while
-    for i in range(0,23):
-      for j in range(1,36):
-        if matriz[i][j] == 'o' and matriz[i-1][j] == '*':
-          sleep(1)
-          pontuacao += 10
-          matriz[i][j] = ' '
-          n = 1
-          posicao = randint(3,31)
+  return num, posicao, vidas, pontuacao
 
-    sleep(0.06)
-
-  return n, x, posicao, vidas, pontuacao
-
-def main():
+def menu():
 
   cont = 0
 
@@ -236,20 +233,21 @@ def main():
     if escolha == 1:
 
       # Limpando o cenário caso o jogador saia e depois queira voltar a jogar na mesma execução
-      for i in range(0,25):
+      for i in range(1,25):
         for j in range(1,36):
           if matriz[i][j] == '*' or matriz[i][j] == 'o':
             matriz[i][j] = ' '
 
       sleep(1)
-      n, x, posicao, vidas, pontuacao = jogo()
+      num, posicao, vidas, pontuacao = jogo()
 
       jogador = pontuacao, input('Seu nome: ' )
 
       # Pontuações são adicionadas sem critério até chegar ao top 4 
       if len(recordes) <= 4:
         recordes.append(jogador)
- 
+
+      # Ao chegar a 5 as pontuações seguintes passam por um filtro
       else:
         recordes = sorted(recordes)
         if recordes[0][0] < jogador[0]:
@@ -258,18 +256,45 @@ def main():
 
       recordes_finais = sorted(recordes, reverse=True)
 
-    if escolha == 2: 
-
+    if escolha == 2:
+      print()
       for elemento in recordes_finais:
         print(elemento)
 
     if escolha == 3:
-      
-      print('''Projeto inspirado no jogo de tiro lançado na década de 70: Asteroids
-        Desenvolvido por Letícia Ribeiro em 2021.''' )
+      print()
+      print('Projeto inspirado no jogo de tiro lançado na década de 70: Asteroids!')
+      print('----------------------------------------------------------------------')
+      print('Developed by Leticia Ribeiro')
+        
 
     if escolha == 4:
       print('Você saiu do jogo.')
       cont = 1
 
-main()
+    if escolha < 1 or escolha > 4:
+      print()
+      print('Opção inválida!!')
+
+
+
+# Programa principal
+# Criação da matriz
+
+matriz = []
+
+for i in range(26):
+  linha = []
+  for j in range(37):
+    if j == 0 or j == 36:
+      linha.append('█')
+    else:
+      linha.append(' ')
+  matriz.append(linha)
+
+
+for j in range(37):
+  matriz[0][j] = '▄'
+  matriz[25][j] = '▀'
+
+menu()

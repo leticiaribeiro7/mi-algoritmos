@@ -61,7 +61,7 @@ def esquerda():
   mostra_matriz()
   
 
-# Verificando posição atual da nave para atirar o projetil
+# Verificando posição atual da nave para atirar o projétil
 def projetil():
 
   system('cls')

@@ -9,7 +9,7 @@ de outra autoria que não a minha está destacado com uma citação para o autor
 do código, e estou ciente que estes trechos não serão considerados para fins de avaliação.
 ******************************************************************************************'''
 
-from os import system, name
+from os import system
 from time import sleep
 import keyboard
 from random import randint

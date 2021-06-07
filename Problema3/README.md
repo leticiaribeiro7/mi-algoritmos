@@ -1,5 +1,5 @@
 ## Gerenciador de manutenções :memo:
-----------
+
 **Sistema de terminal com Python**
 
 ### Requisitos (Cliente) :alien:
